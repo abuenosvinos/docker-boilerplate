@@ -3,8 +3,8 @@
 
 This is a boilerplate for a single repository where you can manage different applications with a single docker configuration.
 
-***
 ##
+<br/>
 
 # Usage
 
@@ -26,8 +26,8 @@ Stopping the containers
 docker compose down
 ```
 
-***
 ##
+<br/>
 
 # Features
 
@@ -52,9 +52,8 @@ docker compose down
 * http://localhost:8001/
 > The RedisInsight Management to manage redis (you can use this or phpRedisAdmin)
 
-
-***
 ##
+<br/>
 
 # The containers
 
@@ -84,8 +83,8 @@ docker compose down
 * app_redisinsight
 > This is an application to manage the content of the redis instance. It's optional, you can do it with your own application or with http://utilities.local/phpRedisAdmin/ 
 
-***
 ##
+<br/>
 
 # To consider
 
@@ -95,8 +94,8 @@ docker compose down
 
 * In `apps/utilities/phpRedisAdmin/includes/config.sample.inc.php` line 8 there is hardcoded the host of the redis instance
 
-***
 ##
+<br/>
 
 # Feedback
 
@@ -104,8 +103,8 @@ Please, if there is something wrong, something that could be improved, or if you
 
 Thank you and I hope it can be useful.
 
-***
 ##
+<br/>
 
 # Next steps
 
