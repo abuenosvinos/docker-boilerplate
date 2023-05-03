@@ -1,0 +1,102 @@
+version: '3'
+services:
+
+  app_mysql:
+    container_name: app_mysql
+    image: mysql:5.7
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=root
+    command: mysqld --sql_mode="STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION" --default-authentication-plugin=mysql_native_password
+    volumes:
+      - app_mysql:/var/lib/mysql
+
+  app_nginx:
+    container_name: app_nginx
+    build: ./docker/nginx
+    volumes:
+      - ./apps/utilities:/var/www/utilities
+      - ./apps/web1:/var/www/web1
+      - ./apps/web2:/var/www/web2
+      - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./docker/nginx/sites/:/etc/nginx/sites-available
+      - ./docker/nginx/conf.d/:/etc/nginx/conf.d
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - app_php_817
+
+  app_php_817:
+    container_name: app_php_817
+    build: ./docker/php_817
+    user: ${UID}:${GID}
+    volumes:
+      - ./apps/utilities:/var/www/utilities
+      - ./apps/web1:/var/www/web1
+      - ./apps/web2:/var/www/web2
+      - ./docker/php_817/php.ini:/usr/local/etc/php/php.ini:ro
+
+  app_composer:
+    container_name: app_composer
+    image: composer:latest
+    user: ${UID}:${GID}
+    volumes:
+      - ./apps/utilities:/var/www/utilities
+    entrypoint: >
+      sh -c "composer update --working-dir=/var/www/utilities/phpMyAdmin --ignore-platform-req=ext-mysqli &&
+      composer update --working-dir=/var/www/utilities/phpRedisAdmin --ignore-platform-req=ext-mysqli"
+    depends_on:
+      - app_php_817
+
+  app_node:
+    container_name: app_node
+    build: ./docker/node
+    user: ${UID}:${GID}
+    volumes:
+      - ./apps/web1:/var/www/web1
+      - ./apps/web2:/var/www/web2
+
+  app_redis:
+    container_name: app_redis
+    image: redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - cache:/data
+
+  app_rabbit:
+    container_name: app_rabbit
+    build: ./docker/rabbitmq
+    hostname: "rabbit"
+    environment:
+      RABBITMQ_ERLANG_COOKIE: "SWQOKODSQALRPCLNMEQG"
+      RABBITMQ_DEFAULT_USER: "rabbitmq"
+      RABBITMQ_DEFAULT_PASS: "rabbitmq"
+      RABBITMQ_DEFAULT_VHOST: "/"
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+    volumes:
+      - "./docker/rabbitmq/enabled_plugins:/etc/rabbitmq/enabled_plugins"
+
+  # https://docs.redis.com/latest/ri/installing/install-docker/
+  app_redisinsight:
+    container_name: app_redisinsight
+    image: redislabs/redisinsight:latest
+    ports:
+      - "8001:8001"
+    volumes:
+      - redisinsight:/db
+    depends_on:
+      - app_redis
+
+volumes:
+  app_mysql: {}
+  redisinsight:
+    driver: local
+  cache:
+    driver: local
+
