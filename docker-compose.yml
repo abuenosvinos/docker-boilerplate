@@ -18,11 +18,12 @@ services:
     build: ./docker/nginx
     volumes:
       - ./apps/utilities:/var/www/utilities
-      - ./apps/web1:/var/www/web1
-      - ./apps/web2:/var/www/web2
+      - ./apps/web:/var/www/web
+      - ./apps/admin:/var/www/admin
       - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf
       - ./docker/nginx/sites/:/etc/nginx/sites-available
       - ./docker/nginx/conf.d/:/etc/nginx/conf.d
+      - ./docker/nginx/ssl/self-signed.conf:/etc/nginx/ssl/self-signed.conf
     ports:
       - "80:80"
       - "443:443"
@@ -35,8 +36,8 @@ services:
     user: ${UID}:${GID}
     volumes:
       - ./apps/utilities:/var/www/utilities
-      - ./apps/web1:/var/www/web1
-      - ./apps/web2:/var/www/web2
+      - ./apps/web:/var/www/web
+      - ./apps/admin:/var/www/admin
       - ./docker/php_817/php.ini:/usr/local/etc/php/php.ini:ro
 
   app_composer:
@@ -46,8 +47,8 @@ services:
     volumes:
       - ./apps/utilities:/var/www/utilities
     entrypoint: >
-      sh -c "composer update --working-dir=/var/www/utilities/phpMyAdmin --ignore-platform-req=ext-mysqli &&
-      composer update --working-dir=/var/www/utilities/phpRedisAdmin --ignore-platform-req=ext-mysqli"
+      sh -c "composer update --working-dir=/var/www/utilities/phpMyAdmin --ignore-platform-reqs &&
+      composer update --working-dir=/var/www/utilities/phpRedisAdmin --ignore-platform-reqs"
     depends_on:
       - app_php_817
 
@@ -56,8 +57,8 @@ services:
     build: ./docker/node
     user: ${UID}:${GID}
     volumes:
-      - ./apps/web1:/var/www/web1
-      - ./apps/web2:/var/www/web2
+      - ./apps/web:/var/www/web
+      - ./apps/admin:/var/www/admin
 
   app_redis:
     container_name: app_redis
@@ -72,7 +73,7 @@ services:
     build: ./docker/rabbitmq
     hostname: "rabbit"
     environment:
-      RABBITMQ_ERLANG_COOKIE: "SWQOKODSQALRPCLNMEQG"
+      RABBITMQ_ERLANG_COOKIE: "myapp-rabbitmq-erlang-cookie"
       RABBITMQ_DEFAULT_USER: "rabbitmq"
       RABBITMQ_DEFAULT_PASS: "rabbitmq"
       RABBITMQ_DEFAULT_VHOST: "/"

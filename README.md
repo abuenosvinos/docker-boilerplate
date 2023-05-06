@@ -13,7 +13,7 @@ If you used localhost you would have to use different ports (80, 81, 82) for eac
 Adding this setting to your computer helps to avoid that situation and makes it more explicit about which application we are browsing.
 ```
 sudo nano /etc/hosts
-127.0.0.1       web1.local web2.local   utilities.local
+127.0.0.1       www.myapp.local admin.myapp.local utilities.myapp.local
 ```
 
 Starting the containers (You need to use the flag --build if you change the files)
@@ -31,25 +31,25 @@ docker compose down
 
 # Features
 
-* http://web1.local/
-> The first application. 
+* https://www.myapp.local/
+> The first application. Web. 
 
-* http://web2.local/
-> The second application
+* https://admin.myapp.local/
+> The second application. Admin.
 
-* http://utilities.local/
+* https://utilities.myapp.local/
 > A place where you can put your useful links and another stuff you need to improve your performance
 
-* http://utilities.local/phpMyAdmin/
+* https://utilities.myapp.local/phpMyAdmin/
 > The phpMyAdmin utility to manage mysql (you can use your local application)
 
-* http://utilities.local/phpRedisAdmin/
+* https://utilities.myapp.local/phpRedisAdmin/
 > The phpRedisAdmin application to manage redis (you can use this or RedisInsight)
 
-* http://localhost:15672/
+* http://utilities.myapp.local:15672/
 > The RabbitMQ Management
 
-* http://localhost:8001/
+* http://utilities.myapp.local:8001/
 > The RedisInsight Management to manage redis (you can use this or phpRedisAdmin)
 
 ##
@@ -81,7 +81,7 @@ docker compose down
 > The RabbitMQ instance. Optional if you don't need it
 
 * app_redisinsight
-> This is an application to manage the content of the redis instance. It's optional, you can do it with your own application or with http://utilities.local/phpRedisAdmin/ 
+> This is an application to manage the content of the redis instance. It's optional, you can do it with your own application or with https://utilities.myapp.local/phpRedisAdmin/ 
 
 ##
 <br/>
@@ -93,6 +93,8 @@ docker compose down
 * In `apps/utilities/phpRedisAdmin/includes/config.inc.php` line 30 there is hardcoded the host of the mysql instance
 
 * In `apps/utilities/phpRedisAdmin/includes/config.sample.inc.php` line 8 there is hardcoded the host of the redis instance
+
+* Depending on your browser, you will likely receive a warning since the certificate you created isn’t signed by one of your browser’s trusted certificate authorities. It is expected, you have to accept to continue.
 
 ##
 <br/>
@@ -108,6 +110,6 @@ Thank you and I hope it can be useful.
 
 # Next steps
 
-* Add a certification for nginx to be able to use https in applications. Something necessary if you have integrations with third-party applications (payment platforms, for example).
-
 * Instead of using naive applications, it might be interesting to use "real" applications using known frameworks.
+
+* Generate ssl certificate using mkcert (https://github.com/FiloSottile/mkcert) to get browser trust.

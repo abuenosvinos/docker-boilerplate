@@ -117,8 +117,8 @@
                         <div class="panel-body">
                             <div class="row">
                                 <div class="col-md-12">
-                                    <a href="http://web1.local/">web1</a> |
-                                    <a href="http://web2.local/">web2</a>
+                                    <a href="https://www.myapp.local/">web</a> |
+                                    <a href="https://admin.myapp.local/">admin</a>
                                 </div>
                             </div>
                         </div>
@@ -131,9 +131,10 @@
                         <div class="panel-body">
                             <div class="row">
                                 <div class="col-md-12">
-                                    <a href="http://utilities.local/phpMyAdmin/">phpMyAdmin</a> |
-                                    <a href="http://utilities.local/phpRedisAdmin/">phpRedisAdmin</a> |
-                                    <a href="http://localhost:8001/">RedisInsight</a>
+                                    <a href="https://utilities.myapp.local/phpMyAdmin/">phpMyAdmin</a> |
+                                    <a href="https://utilities.myapp.local/phpRedisAdmin/">phpRedisAdmin</a> |
+                                    <a href="http://utilities.myapp.local:8001/">RedisInsight</a> |
+                                    <a href="http://utilities.myapp.local:15672/">RabbitMQ</a>
                                 </div>
                             </div>
                         </div>
