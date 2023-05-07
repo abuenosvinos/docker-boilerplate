@@ -64,7 +64,10 @@ docker compose down
 > The nginx instance. In ./docker/nginx/sites you can find the different configurations of your sites
 
 * app_php_817
-> The php instance. If you need different versions of php for your applications (legacy code) you can create an app_php_562 for instance
+> A php instance for the user applications.
+
+* app_php_8028
+> A php instance. To test that it is possible to have more than one php version working. In this case we haven't installed xdebug because this instance is for developer applications
 
 * app_composer
 > This is a temporary container with the only goal to install the php dependencies.<br/>

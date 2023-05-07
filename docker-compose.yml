@@ -29,16 +29,32 @@ services:
       - "443:443"
     depends_on:
       - app_php_817
+      - app_php_8028
 
   app_php_817:
     container_name: app_php_817
     build: ./docker/php_817
     user: ${UID}:${GID}
     volumes:
-      - ./apps/utilities:/var/www/utilities
       - ./apps/web:/var/www/web
       - ./apps/admin:/var/www/admin
       - ./docker/php_817/php.ini:/usr/local/etc/php/php.ini:ro
+    depends_on:
+      - app_mysql
+      - app_redis
+      - app_rabbit
+
+  app_php_8028:
+    container_name: app_php_8028
+    build: ./docker/php_8028
+    user: ${UID}:${GID}
+    volumes:
+      - ./apps/utilities:/var/www/utilities
+      - ./docker/php_8028/php.ini:/usr/local/etc/php/php.ini:ro
+    depends_on:
+      - app_mysql
+      - app_redis
+      - app_rabbit
 
   app_composer:
     container_name: app_composer
@@ -51,6 +67,7 @@ services:
       composer update --working-dir=/var/www/utilities/phpRedisAdmin --ignore-platform-reqs"
     depends_on:
       - app_php_817
+      - app_php_8028
 
   app_node:
     container_name: app_node
