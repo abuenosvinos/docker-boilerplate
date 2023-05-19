@@ -51,3 +51,8 @@ RUN ln -sf /usr/bin/php8 /usr/bin/php
 COPY php.ini /usr/local/etc/php/
 
 WORKDIR /var/www
+
+## Add the wait script to the image (https://github.com/kisztof/docker-compose-wait)
+ADD https://github.com/ufoscout/docker-compose-wait/releases/download/2.4.0/wait /wait
+RUN chmod +x /wait
+CMD /wait && php-fpm

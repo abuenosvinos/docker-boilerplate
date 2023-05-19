@@ -39,6 +39,8 @@ services:
       - ./apps/web:/var/www/web
       - ./apps/admin:/var/www/admin
       - ./docker/php_817/php.ini:/usr/local/etc/php/php.ini:ro
+    environment:
+      WAIT_HOSTS: app_mysql:3306, app_redis:6379, app_rabbit:5672
     depends_on:
       - app_mysql
       - app_redis
