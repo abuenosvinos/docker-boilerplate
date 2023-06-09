@@ -45,6 +45,8 @@ services:
       - app_mysql
       - app_redis
       - app_rabbit
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
 
   app_php_8028:
     container_name: app_php_8028
